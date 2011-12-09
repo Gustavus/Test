@@ -6,15 +6,14 @@ class Test extends PHPUnit_Framework_TestCase
 {
   /**
    * sets the given object property to be the value specified
-   * @param string $class
    * @param object $object
    * @param string $property
    * @param mixed $value
    * @return object
    */
-  protected function setReflectionProperties($class, $object, $property, $value)
+  protected function setReflectionProperties($object, $property, $value)
   {
-    $reflectionProperty = $this->getReflectionProperty($class, $property);
+    $reflectionProperty = $this->getReflectionProperty(get_class($object), $property);
     $reflectionProperty->setValue($object, $value);
     return $object;
   }
@@ -34,26 +33,24 @@ class Test extends PHPUnit_Framework_TestCase
 
   /**
    * Gets the value of the property on the given class
-   * @param string $class
    * @param object $object
    * @param string $property
    * @return mixed
    */
-  protected function getPropertyValue($class, $object, $property)
+  protected function getPropertyValue($object, $property)
   {
-    return $this->getReflectionProperty($class, $property)->getValue($object);
+    return $this->getReflectionProperty(get_class($object), $property)->getValue($object);
   }
 
   /**
    * call protected or private method with $param
-   * @param string $class
    * @param object $object
    * @param string $method
    * @param mixed $param
    */
-  protected function callReflectionMethod($class, $object, $method, array $params = array())
+  protected function callReflectionMethod($object, $method, array $params = array())
   {
-    $rClass = new ReflectionClass($class);
+    $rClass = new ReflectionClass(get_class($object));
     $rMethod = $rClass->getMethod($method);
     $rMethod->setAccessible(true);
     return $rMethod->invokeArgs($object, $params);

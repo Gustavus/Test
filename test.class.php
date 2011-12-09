@@ -33,6 +33,18 @@ class Test extends PHPUnit_Framework_TestCase
   }
 
   /**
+   * Gets the value of the property on the given class
+   * @param string $class
+   * @param object $object
+   * @param string $property
+   * @return mixed
+   */
+  protected function getReflectionPropertyValue($class, $object, $property)
+  {
+    return $this->getReflectionProperty($class, $property)->getValue($object);
+  }
+
+  /**
    * call protected or private method with $param
    * @param string $class
    * @param object $object

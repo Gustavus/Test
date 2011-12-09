@@ -11,7 +11,7 @@ class Test extends PHPUnit_Framework_TestCase
    * @param mixed $value
    * @return object
    */
-  protected function setReflectionProperties($object, $property, $value)
+  protected function setProperty($object, $property, $value)
   {
     $reflectionProperty = $this->getReflectionProperty(get_class($object), $property);
     $reflectionProperty->setValue($object, $value);
@@ -24,7 +24,7 @@ class Test extends PHPUnit_Framework_TestCase
    * @param string $property
    * @return ReflectionProperty
    */
-  protected function getReflectionProperty($class, $property)
+  private function getReflectionProperty($class, $property)
   {
     $reflectionProperty = new ReflectionProperty($class, $property);
     $reflectionProperty->setAccessible(true);
@@ -37,7 +37,7 @@ class Test extends PHPUnit_Framework_TestCase
    * @param string $property
    * @return mixed
    */
-  protected function getPropertyValue($object, $property)
+  protected function getProperty($object, $property)
   {
     return $this->getReflectionProperty(get_class($object), $property)->getValue($object);
   }
@@ -48,7 +48,7 @@ class Test extends PHPUnit_Framework_TestCase
    * @param string $method
    * @param mixed $param
    */
-  protected function callReflectionMethod($object, $method, array $params = array())
+  protected function callMethod($object, $method, array $params = array())
   {
     $rClass = new ReflectionClass(get_class($object));
     $rMethod = $rClass->getMethod($method);

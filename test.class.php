@@ -39,7 +39,7 @@ class Test extends PHPUnit_Framework_TestCase
    * @param string $property
    * @return mixed
    */
-  protected function getReflectionPropertyValue($class, $object, $property)
+  protected function getPropertyValue($class, $object, $property)
   {
     return $this->getReflectionProperty($class, $property)->getValue($object);
   }

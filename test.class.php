@@ -2,7 +2,13 @@
 /**
  * @package Test
  */
-class Test extends PHPUnit_Framework_TestCase
+
+namespace Gustavus\Test;
+
+/**
+ * @package Test
+ */
+class Test extends \PHPUnit_Framework_TestCase
 {
   /**
    * sets the given object property to be the value specified
@@ -26,7 +32,7 @@ class Test extends PHPUnit_Framework_TestCase
    */
   private function getReflectionProperty($class, $property)
   {
-    $reflectionProperty = new ReflectionProperty($class, $property);
+    $reflectionProperty = new \ReflectionProperty($class, $property);
     $reflectionProperty->setAccessible(true);
     return $reflectionProperty;
   }
@@ -50,7 +56,7 @@ class Test extends PHPUnit_Framework_TestCase
    */
   protected function callMethod($object, $method, array $params = array())
   {
-    $rClass = new ReflectionClass(get_class($object));
+    $rClass = new \ReflectionClass(get_class($object));
     $rMethod = $rClass->getMethod($method);
     $rMethod->setAccessible(true);
     return $rMethod->invokeArgs($object, $params);

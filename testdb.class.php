@@ -35,6 +35,14 @@ class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
+   * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
+   */
+  protected function getConnection()
+  {
+    return $this->createDefaultDBConnection(self::$dbh, ':memory:');
+  }
+
+  /**
    * sets the given object property to be the value specified
    * @param object $object
    * @param string $property

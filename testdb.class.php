@@ -16,7 +16,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   /**
    * @var \PDO
    */
-  private static $dbh;
+  protected static $dbh;
 
   /**
    * @var \PHPUnit_Extensions_Database_DB_IDatabaseConnection

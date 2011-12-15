@@ -5,6 +5,8 @@
 
 namespace Gustavus\Test;
 
+require_once 'testlib.class.php';
+
 /**
  * @package Test
  */
@@ -19,9 +21,7 @@ class Test extends \PHPUnit_Framework_TestCase
    */
   protected function setProperty($object, $property, $value)
   {
-    $reflectionProperty = $this->getReflectionProperty(get_class($object), $property);
-    $reflectionProperty->setValue($object, $value);
-    return $object;
+    return TestLib::setProperty($object, $property, $value);
   }
 
   /**
@@ -32,9 +32,7 @@ class Test extends \PHPUnit_Framework_TestCase
    */
   private function getReflectionProperty($class, $property)
   {
-    $reflectionProperty = new \ReflectionProperty($class, $property);
-    $reflectionProperty->setAccessible(true);
-    return $reflectionProperty;
+    return TestLib::getReflectionProperty($class, $property);
   }
 
   /**
@@ -45,7 +43,7 @@ class Test extends \PHPUnit_Framework_TestCase
    */
   protected function getProperty($object, $property)
   {
-    return $this->getReflectionProperty(get_class($object), $property)->getValue($object);
+    return TestLib::getProperty($object, $property);
   }
 
   /**
@@ -56,10 +54,7 @@ class Test extends \PHPUnit_Framework_TestCase
    */
   protected function callMethod($object, $method, array $params = array())
   {
-    $rClass = new \ReflectionClass(get_class($object));
-    $rMethod = $rClass->getMethod($method);
-    $rMethod->setAccessible(true);
-    return $rMethod->invokeArgs($object, $params);
+    return TestLib::callMethod($object, $method, $params);
   }
 
   /**
@@ -77,31 +72,6 @@ class Test extends \PHPUnit_Framework_TestCase
    */
   protected function getGets($class)
   {
-    $reflection = new \ReflectionClass($class);
-    $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
-    return $methods;
-  }
-
-  /**
-   * @param string $dbName
-   * @param string $tableName
-   * @return array
-   */
-  protected function getDBTableColumns($dbName, $tableName)
-  {
-    $expected = null;
-    require_once '/cis/lib/db/db.class.php';
-    $db = \DB::_($dbName);
-    $sql = sprintf('
-      SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = \'%1$s\'',
-        $tableName
-    );
-    $stmt = $db->prepare($sql);
-    $db->execute($stmt);
-    $stmt->bind_result($column);
-    while ($stmt->fetch()) {
-      $expected[] = $column;
-    }
-    return $expected;
+    return TestLib::getGets($class);
   }
 }

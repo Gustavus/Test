@@ -10,7 +10,7 @@ require_once 'testlib.class.php';
 /**
  * @package Test
  */
-class TestDB extends \PHPUnit_Extensions_Database_TestCase
+abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
 {
 
   /**

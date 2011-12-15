@@ -10,7 +10,7 @@ require_once 'testlib.class.php';
 /**
  * @package Test
  */
-class Test extends \PHPUnit_Framework_TestCase
+abstract class Test extends \PHPUnit_Framework_TestCase
 {
   /**
    * sets the given object property to be the value specified

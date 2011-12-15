@@ -12,6 +12,28 @@ require_once 'testlib.class.php';
  */
 class TestDB extends \PHPUnit_Extensions_Database_TestCase
 {
+
+  /**
+   * @var \PDO
+   */
+  protected static $dbh;
+
+ /**
+  * @return void
+  */
+  public static function setUpBeforeClass()
+  {
+    self::$dbh = new \PDO('sqlite::memory:');
+  }
+
+  /**
+   * @return void
+   */
+  public static function tearDownAfterClass()
+  {
+    self::$dbh = null;
+  }
+
   /**
    * sets the given object property to be the value specified
    * @param object $object

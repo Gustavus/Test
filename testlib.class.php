@@ -73,27 +73,4 @@ abstract class TestLib
     $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
     return $methods;
   }
-
-  /**
-   * @param string $dbName
-   * @param string $tableName
-   * @return array
-   */
-  protected function getDBTableColumns($dbName, $tableName)
-  {
-    $expected = null;
-    require_once '/cis/lib/db/db.class.php';
-    $db = \DB::_($dbName);
-    $sql = sprintf('
-      SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = \'%1$s\'',
-        $tableName
-    );
-    $stmt = $db->prepare($sql);
-    $db->execute($stmt);
-    $stmt->bind_result($column);
-    while ($stmt->fetch()) {
-      $expected[] = $column;
-    }
-    return $expected;
-  }
 }

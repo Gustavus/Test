@@ -16,30 +16,36 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   /**
    * @var \PDO
    */
-  protected static $dbh;
-
- /**
-  * @return void
-  */
-  public static function setUpBeforeClass()
-  {
-    self::$dbh = new \PDO('sqlite::memory:');
-  }
+  private static $dbh;
 
   /**
-   * @return void
+   * @var \PHPUnit_Extensions_Database_DB_IDatabaseConnection
    */
-  public static function tearDownAfterClass()
-  {
-    self::$dbh = null;
-  }
+  private $connection;
 
   /**
-   * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
+   * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
    */
   protected function getConnection()
   {
-    return $this->createDefaultDBConnection(self::$dbh, ':memory:');
+    if ($this->connection === null) {
+      if (self::$dbh === null) {
+        self::$dbh = new \PDO('sqlite::memory:');
+      }
+
+      $this->connection = $this->createDefaultDBConnection(self::$dbh, ':memory:');
+    }
+
+    return $this->connection;
+  }
+
+  /**
+   * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
+   */
+  protected function getDataSet()
+  {
+    // This function should be overridden by the extending class
+    return $this->getConnection()->createDataSet(array());
   }
 
   /**

@@ -133,4 +133,44 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
     }
     return $expected;
   }
+
+  /**
+   * sets the mock object database to use our test db
+   * @param string $class
+   * @param string $method
+   * @param array $constructorParams
+   * @return mock object
+   */
+  protected function setUpDBMock($class, $method, array $constructorParams = null)
+  {
+    if (!self::$dbh) {
+      throw new \Exception('Please call getConnection Before running this function');
+    }
+    $dbMock = $this->getMock($class, array($method), $constructorParams);
+    $dbMock->expects($this->any())
+      ->method($method)
+      ->will($this->returnValue(self::$dbh));
+    return $dbMock;
+  }
+
+  /**
+   * makes table from expected dataset into db made from get connection
+   *
+   * @param PHPUnit Dataset $expected
+   * @param string $tableName
+   */
+  protected function setUpDBFromDataset($expected, $tableName)
+  {
+    if (!self::$dbh) {
+      throw new \Exception('Please call getConnection Before running this function');
+    }
+    $tableMetaData = $expected->getTable($tableName)->getTableMetaData();
+    $tableName = $tableMetaData->getTableName();
+    $columns = $tableMetaData->getColumns();
+    $sql = "CREATE TABLE $tableName (";
+    $sql .= implode(' VARCHAR, ', $columns);
+    $sql .= " VARCHAR);";
+    $stmt = self::$dbh->prepare($sql);
+    $stmt->execute();
+  }
 }

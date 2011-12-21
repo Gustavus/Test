@@ -19,9 +19,16 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   protected static $dbh;
 
   /**
+   * @var array of created tables
+   */
+  private $createdTableNames = array();
+
+  /**
    * @var \PHPUnit_Extensions_Database_DB_IDatabaseConnection
    */
   private $connection;
+
+  abstract protected function getDBH();
 
   /**
    * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
@@ -29,11 +36,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   protected function getConnection()
   {
     if ($this->connection === null) {
-      if (self::$dbh === null) {
-        self::$dbh = new \PDO('sqlite::memory:');
-      }
-
-      $this->connection = $this->createDefaultDBConnection(self::$dbh, ':memory:');
+      $this->connection = $this->createDefaultDBConnection($this->getDBH(), ':memory:');
     }
 
     return $this->connection;
@@ -118,38 +121,42 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    */
   protected function getDBTableColumns($dbName, $tableName)
   {
-    $expected = null;
     require_once '/cis/lib/db/db.class.php';
     $db = \DB::_($dbName);
+
     $sql = sprintf('
-      SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = \'%1$s\'',
+      SELECT DISTINCT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = \'%1$s\'',
         $tableName
     );
     $stmt = $db->prepare($sql);
     $db->execute($stmt);
     $stmt->bind_result($column);
+
+    $expected = array();
     while ($stmt->fetch()) {
       $expected[] = $column;
     }
+
     return $expected;
   }
 
   /**
-   * sets the mock object database to use our test db
+   * sets a mock object to use our test db
+   * wherever the tested class uses the db, the db should be returned from a getDB function so we can mock that function
+   *
    * @param string $class
    * @param string $method
    * @param array $constructorParams
    * @return mock object
    */
-  protected function setUpDBMock($class, $method, array $constructorParams = null)
+  protected function getMockWithDB($class, $method, array $constructorParams = null)
   {
-    if (!self::$dbh) {
-      throw new \Exception('Please call getConnection Before running this function');
-    }
+    $this->getConnection();
+
     $dbMock = $this->getMock($class, array($method), $constructorParams);
     $dbMock->expects($this->any())
       ->method($method)
-      ->will($this->returnValue(self::$dbh));
+      ->will($this->returnValue($this->getDBH()));
     return $dbMock;
   }
 
@@ -157,20 +164,52 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    * makes table from expected dataset into db made from get connection
    *
    * @param PHPUnit Dataset $expected
-   * @param string $tableName
+   * @param array $tableNames
+   * @param DBConnection $connection
    */
-  protected function setUpDBFromDataset($expected, $tableName)
+  protected function setUpDBFromDataset($expected, array $tableNames = null, $connection = null)
   {
-    if (!self::$dbh) {
-      throw new \Exception('Please call getConnection Before running this function');
+    $this->getConnection();
+    if ($tableNames === null) {
+      $tableNames = $expected->getTableNames();
     }
-    $tableMetaData = $expected->getTable($tableName)->getTableMetaData();
-    $tableName = $tableMetaData->getTableName();
-    $columns = $tableMetaData->getColumns();
-    $sql = "CREATE TABLE $tableName (";
-    $sql .= implode(' VARCHAR, ', $columns);
-    $sql .= " VARCHAR);";
-    $stmt = self::$dbh->prepare($sql);
-    $stmt->execute();
+    foreach ($tableNames as $tableName) {
+      $tableMetaData = $expected->getTableMetaData($tableName);
+      $columns = $tableMetaData->getColumns();
+      $id = '';
+      if ($columns[0] === "id") {
+        $id = array_shift($columns);
+        $id .= ' INTEGER PRIMARY KEY, ';
+      }
+      $sql = "CREATE TABLE IF NOT EXISTS $tableName ($id";
+      $sql .= implode(' VARCHAR, ', $columns);
+      $sql .= " VARCHAR);";
+      if ($connection === null) {
+        $stmt = $this->getDBH()->prepare($sql);
+      } else {
+        $stmt = $connection->prepare($sql);
+      }
+      $stmt->execute();
+    }
+    $this->createdTableNames = array_merge($this->createdTableNames, $tableNames);
+  }
+
+  /**
+   * Drops tables created so you are working with a fresh db for each test if you call this function
+   *
+   * @param array $tableNames
+   * @return void
+   */
+  protected function dropCreatedTables(array $tableNames = null)
+  {
+    if ($tableNames === null) {
+      $tableNames = $this->createdTableNames;
+      //reset createdTableNames
+      $this->createdTableNames = array();
+    }
+    foreach ($tableNames as $tableName) {
+      $stmt = $this->getDBH()->prepare("DROP TABLE $tableName");
+      $stmt->execute();
+    }
   }
 }

@@ -149,14 +149,15 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    * @param array $constructorParams
    * @return mock object
    */
-  protected function getMockWithDB($class, $method, array $constructorParams = null)
+  protected function getMockWithDB($class, $method, array $constructorParams = null, $returnValue = null)
   {
     $this->getConnection();
 
+    $return = ($returnValue === null) ? $this->getDBH() : $returnValue;
     $dbMock = $this->getMock($class, array($method), $constructorParams);
     $dbMock->expects($this->any())
       ->method($method)
-      ->will($this->returnValue($this->getDBH()));
+      ->will($this->returnValue($return));
     return $dbMock;
   }
 
@@ -167,7 +168,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    * @param array $tableNames
    * @param DBConnection $connection
    */
-  protected function setUpDBFromDataset($expected, array $tableNames = null, $connection = null)
+  protected function setUpDBFromDataset($expected, array $tableNames = null)
   {
     $this->getConnection();
     if ($tableNames === null) {
@@ -184,11 +185,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
       $sql = "CREATE TABLE IF NOT EXISTS $tableName ($id";
       $sql .= implode(' VARCHAR, ', $columns);
       $sql .= " VARCHAR);";
-      if ($connection === null) {
-        $stmt = $this->getDBH()->prepare($sql);
-      } else {
-        $stmt = $connection->prepare($sql);
-      }
+      $stmt = $this->getDBH()->prepare($sql);
       $stmt->execute();
     }
     $this->createdTableNames = array_merge($this->createdTableNames, $tableNames);

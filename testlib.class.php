@@ -17,7 +17,7 @@ abstract class TestLib
    * @param mixed $value
    * @return object
    */
-  public static function setProperty($object, $property, $value)
+  public static function set($object, $property, $value)
   {
     $reflectionProperty = self::getReflectionProperty(get_class($object), $property);
     $reflectionProperty->setValue($object, $value);
@@ -43,18 +43,18 @@ abstract class TestLib
    * @param string $property
    * @return mixed
    */
-  public static function getProperty($object, $property)
+  public static function get($object, $property)
   {
     return self::getReflectionProperty(get_class($object), $property)->getValue($object);
   }
 
   /**
    * call protected or private method with $param
-   * @param object $object
+   * @param object|string $object
    * @param string $method
    * @param mixed $param
    */
-  public static function callMethod($object, $method, array $params = array())
+  public static function call($object, $method, array $params = array())
   {
     $rClass = new \ReflectionClass(get_class($object));
     $rMethod = $rClass->getMethod($method);

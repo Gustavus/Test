@@ -15,7 +15,7 @@ abstract class TestDBPDO extends TestDB
   /**
    * @return \PDO
    */
-  protected function getDBH()
+  final protected function getDBH()
   {
     if (self::$dbh === null) {
       self::$dbh = new \PDO('sqlite::memory:');

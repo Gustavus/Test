@@ -16,7 +16,7 @@ abstract class TestDBGustavus extends TestDB
   /**
    * @return GustavusDBToPDO
    */
-  protected function getDBH()
+  final protected function getDBH()
   {
     if (self::$dbh === null) {
       self::$dbh = new GustavusDBToPDO('sqlite::memory:');

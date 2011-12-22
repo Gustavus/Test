@@ -19,9 +19,9 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    * @param mixed $value
    * @return object
    */
-  protected function setProperty($object, $property, $value)
+  protected function set($object, $property, $value)
   {
-    return TestLib::setProperty($object, $property, $value);
+    return TestLib::set($object, $property, $value);
   }
 
   /**
@@ -41,20 +41,20 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    * @param string $property
    * @return mixed
    */
-  protected function getProperty($object, $property)
+  protected function get($object, $property)
   {
-    return TestLib::getProperty($object, $property);
+    return TestLib::get($object, $property);
   }
 
   /**
    * call protected or private method with $param
-   * @param object $object
+   * @param object|string $object
    * @param string $method
    * @param mixed $param
    */
-  protected function callMethod($object, $method, array $params = array())
+  protected function call($object, $method, array $params = array())
   {
-    return TestLib::callMethod($object, $method, $params);
+    return TestLib::call($object, $method, $params);
   }
 
   /**

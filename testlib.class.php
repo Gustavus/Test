@@ -56,10 +56,15 @@ abstract class TestLib
    */
   public static function call($object, $method, array $params = array())
   {
-    $rClass = new \ReflectionClass(get_class($object));
-    $rMethod = $rClass->getMethod($method);
+    $rClass   = new \ReflectionClass($object);
+    $rMethod  = $rClass->getMethod($method);
     $rMethod->setAccessible(true);
-    return $rMethod->invokeArgs($object, $params);
+
+    if (is_string($object)) {
+      return $rMethod->invokeArgs(null, $params);
+    } else {
+      return $rMethod->invokeArgs($object, $params);
+    }
   }
 
   /**

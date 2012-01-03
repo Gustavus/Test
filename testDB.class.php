@@ -179,12 +179,13 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
       $columns = $tableMetaData->getColumns();
       $id = '';
       if ($columns[0] === "id") {
-        $id = array_shift($columns);
-        $id .= ' INTEGER PRIMARY KEY, ';
+        $id = '`'.array_shift($columns).'`';
+        $id .= ' INTEGER PRIMARY KEY, `';
       }
       $sql = "CREATE TABLE IF NOT EXISTS $tableName ($id";
-      $sql .= implode(' VARCHAR, ', $columns);
-      $sql .= " VARCHAR);";
+      $sql .= implode('` VARCHAR, `', $columns);
+      $sql .= "` VARCHAR);";
+      var_dump($sql);
       $stmt = $this->getDBH()->prepare($sql);
       $stmt->execute();
     }

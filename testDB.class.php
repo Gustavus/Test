@@ -52,6 +52,16 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
+   * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet
+   * @param array $filterArray keyed by table name, values are array of columns to be filtered out
+   * @return PHPUnit_Extensions_Database_DataSet_DataSetFilter
+   */
+  protected function getFilteredDataSet($dataSet, array $filterArray)
+  {
+    return new \PHPUnit_Extensions_Database_DataSet_DataSetFilter($dataSet, $filterArray);
+  }
+
+  /**
    * sets the given object property to be the value specified
    * @param object $object
    * @param string $property

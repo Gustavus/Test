@@ -182,7 +182,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
         $id = '`'.array_shift($columns).'`';
         $id .= ' INTEGER PRIMARY KEY, `';
       }
-      $sql = "CREATE TABLE IF NOT EXISTS $tableName ($id";
+      $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($id";
       $sql .= implode('` VARCHAR, `', $columns);
       $sql .= "` VARCHAR);";
 

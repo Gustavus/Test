@@ -185,7 +185,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
       $sql = "CREATE TABLE IF NOT EXISTS $tableName ($id";
       $sql .= implode('` VARCHAR, `', $columns);
       $sql .= "` VARCHAR);";
-      var_dump($sql);
+
       $stmt = $this->getDBH()->prepare($sql);
       $stmt->execute();
     }

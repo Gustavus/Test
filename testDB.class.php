@@ -206,7 +206,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
       $this->createdTableNames = array();
     }
     foreach ($tableNames as $tableName) {
-      $stmt = $this->getDBH()->prepare("DROP TABLE $tableName");
+      $stmt = $this->getDBH()->prepare("DROP TABLE `$tableName`");
       $stmt->execute();
     }
   }

@@ -142,7 +142,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
 
   /**
    * sets a mock object to use our test db
-   * wherever the tested class uses the db, the db should be returned from a getDB function so we can mock that function
+   * wherever the tested class uses the db, the db should be returned from a non private getDB function so we can mock that function
    *
    * @param string $class
    * @param string $method

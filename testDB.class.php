@@ -160,7 +160,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    * @param mixed $returnValue
    * @return mock object
    */
-  protected function getMockWithDB($class, $method, array $constructorParams = null, $returnValue = null)
+  protected function getMockWithDB($class, $method, array $constructorParams = array(), $returnValue = null)
   {
     $this->getConnection();
 

@@ -144,9 +144,10 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    * sets a mock object to use our test db
    * wherever the tested class uses the db, the db should be returned from a getDB function so we can mock that function
    *
-   * @param string $class
-   * @param string $method
+   * @param string $class Fully qualified name of the class to mock (e.g. '\Gustavus\Project\Class')
+   * @param string $method Name of method that returns the database handle (e.g. 'getDBH')
    * @param array $constructorParams
+   * @param mixed $returnValue
    * @return mock object
    */
   protected function getMockWithDB($class, $method, array $constructorParams = null, $returnValue = null)

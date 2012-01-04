@@ -6,6 +6,7 @@
 namespace Gustavus\Test;
 
 /**
+ * This needs to be separate because these functions are used by Test and TestDB but Test and TestDB need to extend different classes in PHPUnit. Perhaps when traits are added to PHP, we will be able to do this differently.
  * @package Test
  */
 abstract class TestLib

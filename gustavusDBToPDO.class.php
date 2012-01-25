@@ -65,11 +65,12 @@ class GustavusDBToPDO extends \PDO
 
   /**
    * @param string $sql
+   * @param array $driverOptions
    * @return \PDOStatement
    */
-  public function prepare($sql)
+  public function prepare($sql, $driverOptions = array())
   {
-    return parent::prepare($sql);
+    return parent::prepare($sql, $driverOptions);
   }
 
   /**

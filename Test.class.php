@@ -13,7 +13,8 @@ require_once 'Gustavus/Test/TestLib.class.php';
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
   /**
-   * sets the given object property to be the value specified
+   * Sets the given object property to be the value specified
+   *
    * @param object $object
    * @param string $property
    * @param mixed $value
@@ -25,7 +26,8 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * sets up reflection property object
+   * Sets up reflection property object
+   *
    * @param string $class
    * @param string $property
    * @return ReflectionProperty
@@ -37,6 +39,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
 
   /**
    * Gets the value of the property on the given class
+   *
    * @param object $object
    * @param string $property
    * @return mixed
@@ -47,14 +50,15 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * call protected or private method with $param
+   * Calls protected or private method with $arguments as the arguments
+   *
    * @param object|string $object
    * @param string $method
-   * @param mixed $param
+   * @param array $arguments
    */
-  protected function call($object, $method, array $params = array())
+  protected function call($object, $method, array $arguments = array())
   {
-    return TestLib::call($object, $method, $params);
+    return TestLib::call($object, $method, $arguments);
   }
 
   /**
@@ -66,7 +70,8 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * gets the public get methods
+   * Gets the public get methods
+   *
    * @param string $class
    * @return ReflectionMethod
    */

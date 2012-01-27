@@ -5,7 +5,7 @@
 
 namespace Gustavus\Test;
 
-require_once 'testlib.class.php';
+require_once 'Gustavus/Test/TestLib.class.php';
 
 /**
  * @package Test

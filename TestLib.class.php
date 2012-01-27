@@ -49,7 +49,10 @@ abstract class TestLib
    */
   public static function get($object, $property)
   {
-    return self::getReflectionProperty(get_class($object), $property)->getValue($object);
+    if (is_object($object)) {
+      $object = get_class($object);
+    }
+    return self::getReflectionProperty($object, $property)->getValue($object);
   }
 
   /**

@@ -75,18 +75,6 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
-   * Sets up reflection property object
-   *
-   * @param string $class
-   * @param string $property
-   * @return ReflectionProperty
-   */
-  private function getReflectionProperty($class, $property)
-  {
-    return TestLib::getReflectionProperty($class, $property);
-  }
-
-  /**
    * Gets the value of the property on the given class
    *
    * @param object $object

@@ -5,8 +5,8 @@
 
 namespace Gustavus\Test;
 
-require_once 'Gustavus/Test/TestDB.class.php';
-require_once 'Gustavus/Test/GustavusDBToPDO.class.php';
+require_once 'Gustavus/Test/TestDB.php';
+require_once 'Gustavus/Test/GustavusDBToPDO.php';
 
 /**
  * @package Test

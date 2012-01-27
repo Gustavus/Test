@@ -5,7 +5,7 @@
 
 namespace Gustavus\Test;
 
-require_once 'testlib.class.php';
+require_once 'Gustavus/Test/TestLib.php';
 
 /**
  * @package Test
@@ -62,7 +62,8 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
-   * sets the given object property to be the value specified
+   * Sets the given object property to be the value specified
+   *
    * @param object $object
    * @param string $property
    * @param mixed $value
@@ -74,18 +75,8 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
-   * sets up reflection property object
-   * @param string $class
-   * @param string $property
-   * @return ReflectionProperty
-   */
-  private function getReflectionProperty($class, $property)
-  {
-    return TestLib::getReflectionProperty($class, $property);
-  }
-
-  /**
    * Gets the value of the property on the given class
+   *
    * @param object $object
    * @param string $property
    * @return mixed
@@ -96,14 +87,15 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
-   * call protected or private method with $param
+   * Calls protected or private method with $arguments as the arguments
+   *
    * @param object|string $object
    * @param string $method
-   * @param mixed $param
+   * @param array $arguments
    */
-  protected function call($object, $method, array $params = array())
+  protected function call($object, $method, array $arguments = array())
   {
-    return TestLib::call($object, $method, $params);
+    return TestLib::call($object, $method, $arguments);
   }
 
   /**
@@ -115,7 +107,8 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
-   * gets the public get methods
+   * Gets the public get methods
+   *
    * @param string $class
    * @return ReflectionMethod
    */
@@ -151,8 +144,9 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
-   * sets a mock object to use our test db
-   * wherever the tested class uses the db, the db should be returned from a non private getDB function so we can mock that function
+   * Sets a mock object to use our test db
+   *
+   * Wherever the tested class uses the db, the db should be returned from a non private getDB function so we can mock that function
    *
    * @param string $class Fully qualified name of the class to mock (e.g. '\Gustavus\Project\Class')
    * @param string $method Name of method that returns the database handle (e.g. 'getDBH')
@@ -173,7 +167,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
-   * makes table from expected dataset into db made from get connection
+   * Makes table from expected dataset into db made from get connection
    *
    * @param PHPUnit Dataset $expected
    * @param array $tableNames

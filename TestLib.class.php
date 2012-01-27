@@ -12,6 +12,19 @@ namespace Gustavus\Test;
 abstract class TestLib
 {
   /**
+   * @param object $object
+   * @return string
+   */
+  private static function getClass($object)
+  {
+    if (is_object($object)) {
+      return get_class($object);
+    }
+
+    return $object;
+  }
+
+  /**
    * Sets the given object property to be the value specified
    *
    * @param object $object
@@ -21,7 +34,7 @@ abstract class TestLib
    */
   public static function set($object, $property, $value)
   {
-    $reflectionProperty = self::getReflectionProperty(get_class($object), $property);
+    $reflectionProperty = self::getReflectionProperty(self::getClass($object), $property);
     $reflectionProperty->setValue($object, $value);
     return $object;
   }
@@ -49,10 +62,7 @@ abstract class TestLib
    */
   public static function get($object, $property)
   {
-    if (is_object($object)) {
-      $object = get_class($object);
-    }
-    return self::getReflectionProperty($object, $property)->getValue($object);
+    return self::getReflectionProperty(self::getClass($object), $property)->getValue($object);
   }
 
   /**

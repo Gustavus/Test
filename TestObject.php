@@ -10,12 +10,12 @@ require_once 'Gustavus/Test/TestLib.php';
 /**
  * @package Test
  */
-class TestObject
+class TestObject extends \PHPUnit_Framework_TestCase
 {
   /**
    * @var object
    */
-  private $object;
+  protected $object;
 
   /**
    * @param object $object

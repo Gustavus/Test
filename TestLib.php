@@ -25,6 +25,44 @@ abstract class TestLib
   }
 
   /**
+   * Gets the class name that contains the property.
+   *
+   * This is useful for private properties on parent classes that are extended.
+   *
+   * @param string $class
+   * @param string $property
+   * @return string Class that contains the property, false on failure
+   */
+  private static function getClassWithProperty($class, $property)
+  {
+    if (property_exists($class, $property)) {
+      return $class;
+    } else if ($class = get_parent_class($class)) {
+      return self::getClassWithProperty($class, $property);
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Sets up reflection property object
+   *
+   * @param string $class
+   * @param string $property
+   * @return \ReflectionProperty
+   */
+  private static function getReflectionProperty($class, $property)
+  {
+    if ($classWithProperty = self::getClassWithProperty($class, $property)) {
+      $reflectionProperty = new \ReflectionProperty($classWithProperty, $property);
+      $reflectionProperty->setAccessible(true);
+      return $reflectionProperty;
+    } else {
+      throw new \ReflectionException("Property $class::$property does not exist");
+    }
+  }
+
+  /**
    * Sets the given object property to be the value specified
    *
    * @param object $object
@@ -37,20 +75,6 @@ abstract class TestLib
     $reflectionProperty = self::getReflectionProperty(self::getClass($object), $property);
     $reflectionProperty->setValue($object, $value);
     return $object;
-  }
-
-  /**
-   * Sets up reflection property object
-   *
-   * @param string $class
-   * @param string $property
-   * @return ReflectionProperty
-   */
-  private static function getReflectionProperty($class, $property)
-  {
-    $reflectionProperty = new \ReflectionProperty($class, $property);
-    $reflectionProperty->setAccessible(true);
-    return $reflectionProperty;
   }
 
   /**

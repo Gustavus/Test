@@ -5,8 +5,6 @@
 
 namespace Gustavus\Test;
 
-require_once __DIR__ . '/TestObject.php';
-
 /**
  * @package Test
  */

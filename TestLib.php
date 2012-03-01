@@ -65,28 +65,29 @@ abstract class TestLib
   /**
    * Sets the given object property to be the value specified
    *
-   * @param object $object
+   * @param object|string $class
    * @param string $property
    * @param mixed $value
-   * @return object
+   * @return mixed
    */
-  public static function set($object, $property, $value)
+  public static function set($class, $property, $value)
   {
-    $reflectionProperty = self::getReflectionProperty(self::getClass($object), $property);
-    $reflectionProperty->setValue($object, $value);
-    return $object;
+    $reflectionProperty = self::getReflectionProperty(self::getClass($class), $property);
+    $reflectionProperty->setValue($class, $value);
+
+    return $class;
   }
 
   /**
    * Gets the value of the property on the given class
    *
-   * @param object $object
+   * @param object|string $class
    * @param string $property
    * @return mixed
    */
-  public static function get($object, $property)
+  public static function get($class, $property)
   {
-    return self::getReflectionProperty(self::getClass($object), $property)->getValue($object);
+    return self::getReflectionProperty(self::getClass($class), $property)->getValue($class);
   }
 
   /**

@@ -5,8 +5,6 @@
 
 namespace Gustavus\Test;
 
-require_once 'Gustavus/Test/TestDB.php';
-
 /**
  * @package Test
  */

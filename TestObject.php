@@ -8,7 +8,7 @@ namespace Gustavus\Test;
 /**
  * @package Test
  */
-class TestObject extends \PHPUnit_Framework_TestCase
+class TestObject
 {
   /**
    * @var object

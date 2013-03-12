@@ -37,16 +37,21 @@ class TestEM extends TestDBPDO
    */
   public function tearDown()
   {
+    unset($this->entityManager);
   }
 
   /**
    * Sets up the EntityManager if needed.
    *
    * @param  string $entityLocation Path to entities' parent
+   * @param  boolean $new  Whether to get a new entity manager or not
    * @return EntityManager
    */
-  protected function getEntityManager($entityLocation)
+  protected function getEntityManager($entityLocation, $new = false)
   {
+    if ($new) {
+      return EntityManager::getEntityManager($entityLocation, $this->getDBH(), 'testDB');
+    }
     if (!isset($this->entityManager)) {
       $this->entityManager = EntityManager::getEntityManager($entityLocation, $this->getDBH(), 'testDB');
     }

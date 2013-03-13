@@ -104,9 +104,21 @@ abstract class TestLib
     $rMethod->setAccessible(true);
 
     if (is_string($object)) {
-      return $rMethod->invokeArgs(null, $arguments);
+      if (count($arguments) === 0) {
+        // Temporary partial workaround for bug in PHP. It looks like this bug was fixed in PHP 5.3.11 so this code can be removed after upgrading to that version.
+        // @link https://bugs.php.net/bug.php?id=60968
+        return $rMethod->invoke(null);
+      } else {
+        return $rMethod->invokeArgs(null, $arguments);
+      }
     } else {
-      return $rMethod->invokeArgs($object, $arguments);
+      if (count($arguments) === 0) {
+        // Temporary partial workaround for bug in PHP. It looks like this bug was fixed in PHP 5.3.11 so this code can be removed after upgrading to that version.
+        // @link https://bugs.php.net/bug.php?id=60968
+        return $rMethod->invoke($object);
+      } else {
+        return $rMethod->invokeArgs($object, $arguments);
+      }
     }
   }
 

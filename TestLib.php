@@ -5,6 +5,10 @@
 
 namespace Gustavus\Test;
 
+require_once 'gatekeeper/gatekeeper.class.php';
+
+use Gustavus\Gatekeeper\Gatekeeper;
+
 /**
  * This needs to be separate because these functions are used by Test and TestDB but Test and TestDB need to extend different classes in PHPUnit. Perhaps when traits are added to PHP, we will be able to do this differently.
  * @package Test
@@ -133,5 +137,28 @@ abstract class TestLib
     $reflection = new \ReflectionClass($class);
     $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
     return $methods;
+  }
+
+  /**
+   * Mocks authentication
+   *
+   * @param  string $username
+   * @return
+   */
+  public static function authenticate($username)
+  {
+    Gatekeeper::setUsername($username);
+    static::set('\Gustavus\Gatekeeper\Gatekeeper', 'loggedIn', true);
+  }
+
+  /**
+   * Mocks authentication logged out
+   *
+   * @return
+   */
+  public static function unAuthenticate()
+  {
+    static::set('\Gustavus\Gatekeeper\Gatekeeper', 'user', null);
+    static::set('\Gustavus\Gatekeeper\Gatekeeper', 'loggedIn', false);
   }
 }

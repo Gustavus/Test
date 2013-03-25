@@ -5,10 +5,6 @@
 
 namespace Gustavus\Test;
 
-require_once 'gatekeeper/gatekeeper.class.php';
-
-use Gustavus\Gatekeeper\Gatekeeper;
-
 /**
  * @package Test
  */
@@ -90,8 +86,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    */
   protected function authenticate($username)
   {
-    Gatekeeper::setUsername($username);
-    $this->set('\Gustavus\Gatekeeper\Gatekeeper', 'loggedIn', true);
+    return TestLib::authenticate($username);
   }
 
   /**
@@ -101,7 +96,6 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    */
   protected function unAuthenticate()
   {
-    $this->set('\Gustavus\Gatekeeper\Gatekeeper', 'user', null);
-    $this->set('\Gustavus\Gatekeeper\Gatekeeper', 'loggedIn', false);
+    return TestLib::unAuthenticate();
   }
 }

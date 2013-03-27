@@ -213,4 +213,25 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
       $stmt->execute();
     }
   }
+
+  /**
+   * Mocks authentication
+   *
+   * @param  string $username
+   * @return
+   */
+  protected function authenticate($username)
+  {
+    return TestLib::authenticate($username);
+  }
+
+  /**
+   * Mocks authentication logged out
+   *
+   * @return
+   */
+  protected function unAuthenticate()
+  {
+    return TestLib::unAuthenticate();
+  }
 }

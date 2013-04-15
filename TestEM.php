@@ -69,7 +69,7 @@ class TestEM extends TestDBPDO
   {
     $tools = new SchemaTool($this->getEntityManager($entityLocation));
     foreach ($classes as &$class) {
-      $class = $this->entityManager->getClassMetadata($class);
+      $class = $this->getEntityManager($entityLocation)->getClassMetadata($class);
     }
 
     return $tools->updateSchema($classes);
@@ -87,7 +87,7 @@ class TestEM extends TestDBPDO
     $tools = new SchemaTool($this->getEntityManager($entityLocation));
     $classMetaData = [];
     foreach ($classes as $class) {
-      $classMentaData[] = $this->getEntityManager()->getClassMetadata($class);
+      $classMentaData[] = $this->getEntityManager($entityLocation)->getClassMetadata($class);
     }
 
     return $tools->dropSchema($classes);

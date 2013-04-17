@@ -159,6 +159,9 @@ abstract class TestLib
   public static function unAuthenticate()
   {
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'user', null);
+    static::set('\Gustavus\Gatekeeper\Gatekeeper', 'username', null);
+    static::set('\Gustavus\Gatekeeper\Gatekeeper', 'permissions', array());
+    static::set('\Gustavus\Gatekeeper\Gatekeeper', 'permissionsCache', array());
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'loggedIn', false);
   }
 }

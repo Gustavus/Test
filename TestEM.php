@@ -50,12 +50,27 @@ class TestEM extends TestDBPDO
   protected function getEntityManager($entityLocation, $new = false)
   {
     if ($new) {
-      return EntityManager::getEntityManager($entityLocation, $this->getDBH(), 'testDB');
+      $this->newEntityManager = EntityManager::getEntityManager($entityLocation, $this->getDBH(), 'testDB');
+      return $this->newEntityManager;
     }
     if (!isset($this->entityManager)) {
       $this->entityManager = EntityManager::getEntityManager($entityLocation, $this->getDBH(), 'testDB');
     }
     return $this->entityManager;
+  }
+
+  /**
+   * Gets the new entity manager generated in getEntityManager with $new = true. Or generates a new one itself if a new one hasn't been set yet.
+   *
+   * @param  string $entityLocation Path to directory containing the entities folder
+   * @return EntityManager
+   */
+  protected function getNewEntityManager($entityLocation)
+  {
+    if (!isset($this->newEntityManager)) {
+      $this->getEntityManager($entityLocation, true);
+    }
+    return $this->newEntityManager;
   }
 
   /**
@@ -69,7 +84,7 @@ class TestEM extends TestDBPDO
   {
     $tools = new SchemaTool($this->getEntityManager($entityLocation));
     foreach ($classes as &$class) {
-      $class = $this->entityManager->getClassMetadata($class);
+      $class = $this->getEntityManager($entityLocation)->getClassMetadata($class);
     }
 
     return $tools->updateSchema($classes);
@@ -85,9 +100,8 @@ class TestEM extends TestDBPDO
   protected function destroyDBClasses($entityLocation, array $classes)
   {
     $tools = new SchemaTool($this->getEntityManager($entityLocation));
-    $classMetaData = [];
-    foreach ($classes as $class) {
-      $classMentaData[] = $this->getEntityManager()->getClassMetadata($class);
+    foreach ($classes as &$class) {
+      $class = $this->getEntityManager($entityLocation)->getClassMetadata($class);
     }
 
     return $tools->dropSchema($classes);

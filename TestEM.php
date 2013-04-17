@@ -100,9 +100,8 @@ class TestEM extends TestDBPDO
   protected function destroyDBClasses($entityLocation, array $classes)
   {
     $tools = new SchemaTool($this->getEntityManager($entityLocation));
-    $classMetaData = [];
-    foreach ($classes as $class) {
-      $classMentaData[] = $this->getEntityManager($entityLocation)->getClassMetadata($class);
+    foreach ($classes as &$class) {
+      $class = $this->getEntityManager($entityLocation)->getClassMetadata($class);
     }
 
     return $tools->dropSchema($classes);

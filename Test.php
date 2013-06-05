@@ -34,6 +34,8 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    *
    * @throws InvalidArgumentException
    *  if $filename is null, empty or not a string, or if the override file specified cannot be read.
+   *
+   * @return void
    */
   protected function addOverride($filename)
   {

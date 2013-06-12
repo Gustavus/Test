@@ -34,6 +34,8 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    *
    * @throws InvalidArgumentException
    *  if $filename is null, empty or not a string, or if the override file specified cannot be read.
+   *
+   * @return void
    */
   protected function addOverride($filename)
   {
@@ -134,11 +136,12 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    * Mocks authentication
    *
    * @param  string $username
+   * @param  Campus\Person $person Campus person to set as gatekeeper's user
    * @return
    */
-  protected function authenticate($username)
+  protected function authenticate($username, $person = null)
   {
-    return TestLib::authenticate($username);
+    return TestLib::authenticate($username, $person);
   }
 
   /**

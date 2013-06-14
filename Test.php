@@ -37,7 +37,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    *
    * @return void
    */
-  protected function addOverride($filename)
+  protected static function addOverride($filename)
   {
     if (!is_string($filename) && empty($filename)) {
       throw new InvalidArgumentException('$filename is null, empty or not a string.');

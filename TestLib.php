@@ -202,9 +202,14 @@ abstract class TestLib
     }
 
     // Get the base test directory
-    $debugInfo = debug_backtrace(0, 1);
+    $debugInfo = debug_backtrace(0);
 
-    if (isset($debugInfo[0]['file']) && preg_match('/^(\\/cis\\/lib\\/Gustavus\\/[^\\/]+)\\/.+$/', $debugInfo[0]['file'], $matches) === 1) {
+    // Jump past any internal calls from other classes in the Test package...
+    while (isset($debugInfo[0]['class']) && preg_match('/\\A\\/cis\\/lib\\/Gustavus\\/Test\\/.+\\z/', $debugInfo[0]['file']) === 1) {
+      array_shift($debugInfo);
+    }
+
+    if (isset($debugInfo[0]['file']) && preg_match('/\\A(\\/cis\\/lib\\/Gustavus\\/[^\\/]+)\\/.+$\\z/', $debugInfo[0]['file'], $matches) === 1) {
       $base = $matches[1] . DIRECTORY_SEPARATOR . 'Test';
     } else {
       // Whelp... Hope for the best here.

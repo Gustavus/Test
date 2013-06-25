@@ -41,14 +41,6 @@ class TestEM extends TestDBPDO
   }
 
   /**
-   * The name of the overrides directory. All test-specific overrides must live here.
-   *
-   * @var string
-   */
-  const OVERRIDE_DIR = 'Overrides';
-
-
-  /**
    * Includes the override file specified. If the file has already been included, this method does
    * nothing.
    *
@@ -63,34 +55,10 @@ class TestEM extends TestDBPDO
    *  if $filename is null, empty or not a string, or if the override file specified cannot be read.
    *
    * @return void
-   *
-   * @todo:
-   *  Remove this function if/when this class extends from Test
    */
-  protected function addOverride($filename)
+  public function addOverride($filename)
   {
-    if (!is_string($filename) && empty($filename)) {
-      throw new InvalidArgumentException('$filename is null, empty or not a string.');
-    }
-
-    // Get the base test directory
-    $debugInfo = debug_backtrace(0, 1);
-
-    if (isset($debugInfo[0]['file']) && preg_match('/^(\\/cis\\/lib\\/Gustavus\\/[^\\/]+)\\/.+$/', $debugInfo[0]['file'], $matches) === 1) {
-      $base = $matches[1] . DIRECTORY_SEPARATOR . 'Test';
-    } else {
-      // Whelp... Hope for the best here.
-      $base = getcwd();
-    }
-
-    // Build an intended target and make sure it's actually a file and can be read
-    $target = sprintf('%2$s%1$s%3$s%1$s%4$s.php', DIRECTORY_SEPARATOR, $base, self::OVERRIDE_DIR, $filename);
-
-    if (!is_file($target) || !is_readable($target)) {
-      throw new InvalidArgumentException('Target override file does not exist, is not a file or is not readable: ' . $target);
-    }
-
-    require_once($target);
+    return TestLib::addOverride($filename);
   }
 
   /**

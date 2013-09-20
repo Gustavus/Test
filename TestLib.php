@@ -236,7 +236,7 @@ abstract class TestLib
    *
    * @return mixed
    */
-  public static function setupGacMailerTest()
+  public static function setupGACMailerTest()
   {
     self::set('\Gustavus\GACMailer\GACMailer', 'instance', new TestGacMailerInstance);
   }

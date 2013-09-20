@@ -129,9 +129,9 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    *
    * @return mixed
    */
-  protected function setupGacMailerTest()
+  protected function setupGACMailerTest()
   {
-    return TestLib::setupGacMailerTest();
+    return TestLib::setupGACMailerTest();
   }
 
   /**

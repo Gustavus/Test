@@ -30,9 +30,9 @@ class TestLibTest extends \PHPUnit_Framework_TestCase
   /**
    * @test
    */
-  public function setupGacMailerTest()
+  public function setupGACMailerTest()
   {
-    TestLib::setupGacMailerTest();
+    TestLib::setupGACMailerTest();
 
     $message = (new EmailMessage)
       ->setSubject('Test')

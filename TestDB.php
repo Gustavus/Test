@@ -262,9 +262,9 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    *
    * @return mixed
    */
-  protected function setupGacMailerTest()
+  protected function setupGACMailerTest()
   {
-    return TestLib::setupGacMailerTest();
+    return TestLib::setupGACMailerTest();
   }
 
   /**

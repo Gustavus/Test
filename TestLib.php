@@ -197,6 +197,11 @@ abstract class TestLib
    */
   public static function addOverride($filename)
   {
+    // @todo:
+    // Replace this with some fancy reflection, closure and function injection so it can be
+    // programatically reverted when the override is no longer needed (ie: In the case of filtering
+    // tests).
+
     if (!is_string($filename) && empty($filename)) {
       throw new InvalidArgumentException('$filename is null, empty or not a string.');
     }
@@ -224,5 +229,25 @@ abstract class TestLib
     }
 
     require_once($target);
+  }
+
+  /**
+   * Sets GACMailer's instance to be our test instance
+   *
+   * @return mixed
+   */
+  public static function setupGacMailerTest()
+  {
+    self::set('\Gustavus\GACMailer\GACMailer', 'instance', new TestGacMailerInstance);
+  }
+
+  /**
+   * Gets the sent message from our test instance
+   *
+   * @return Gustavus\GACMailer\EmailMessage
+   */
+  public static function getSentMessage()
+  {
+    return TestGacMailerInstance::$sentMessage;
   }
 }

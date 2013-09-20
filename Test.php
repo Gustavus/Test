@@ -123,4 +123,24 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   {
     return TestLib::unAuthenticate();
   }
+
+  /**
+   * Sets GACMailer's instance to be our test instance
+   *
+   * @return mixed
+   */
+  protected function setupGacMailerTest()
+  {
+    return TestLib::setupGacMailerTest();
+  }
+
+  /**
+   * Gets the sent message from our test instance
+   *
+   * @return Gustavus\GACMailer\EmailMessage
+   */
+  protected function getSentMessage()
+  {
+    return TestGacMailerInstance::$sentMessage;
+  }
 }

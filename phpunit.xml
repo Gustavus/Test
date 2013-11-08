@@ -5,6 +5,12 @@
     </testsuite>
   </testsuites>
 
+  <testsuites>
+    <testsuite name="Test">
+      <directory suffix="Test.php">/cis/lib/Gustavus/Test/Test/</directory>
+    </testsuite>
+  </testsuites>
+
   <php>
     <ini name="xdebug.collect_params" value="0"/>
     <server name="DOCUMENT_ROOT" value="/cis/www/"/>
@@ -15,4 +21,8 @@
       <directory suffix=".php">/cis/lib/Gustavus/Test</directory>
     </whitelist>
   </filter>
+
+  <logging>
+    <log type="coverage-html" target="/cis/www/tests/reports/projects/test" charset="UTF-8"/>
+  </logging>
 </phpunit>

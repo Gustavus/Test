@@ -14,27 +14,6 @@ use InvalidArgumentException;
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
   /**
-   * Includes the override file specified. If the file has already been included, this method does
-   * nothing.
-   *
-   * When including overrides, if the caller originates from a library within the Gustavus
-   * repository, the file will be included from Gustavus/Project/Test/Overrides. Otherwise, the
-   * file will be included from the current working directory when called.
-   *
-   * @param string $filename
-   *  The name of the override file to include, without the file extension.
-   *
-   * @throws InvalidArgumentException
-   *  if $filename is null, empty or not a string, or if the override file specified cannot be read.
-   *
-   * @return void
-   */
-  public function addOverride($filename)
-  {
-    return TestLib::addOverride($filename);
-  }
-
-  /**
    * Sets the given object property to be the value specified
    *
    * @param object $object

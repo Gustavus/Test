@@ -5,12 +5,6 @@
     </testsuite>
   </testsuites>
 
-  <testsuites>
-    <testsuite name="Test">
-      <directory suffix="Test.php">/cis/lib/Gustavus/Test/Test/</directory>
-    </testsuite>
-  </testsuites>
-
   <php>
     <ini name="xdebug.collect_params" value="0"/>
     <server name="DOCUMENT_ROOT" value="/cis/www/"/>

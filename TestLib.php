@@ -13,17 +13,17 @@ use Gustavus\Gatekeeper\Gatekeeper,
 
 /**
  * This needs to be separate because these functions are used by Test and TestDB but Test and TestDB need to extend different classes in PHPUnit. Perhaps when traits are added to PHP, we will be able to do this differently.
+ *
+ * <strong>Test Utility Locations</strong>
+ * <ul>
+ *   <li>Revisions entities for db creation: /cis/lib/Gustavus/Revisions/Test/Entities</li>
+ *   <li>GACMailer test utility: /cis/lib/Gustavus/GACMailer/Test/MockMailer</li>
+ *   <li>FakePerson test utility: /cis/lib/campus/Test/FakePerson</li>
+ * </ul>
  * @package Test
  */
 abstract class TestLib
 {
-  /**
-   * The name of the overrides directory. All test-specific overrides must live here.
-   *
-   * @var string
-   */
-  const OVERRIDE_DIR = 'Overrides';
-
   /**
    * @param object $object
    * @return string
@@ -176,53 +176,5 @@ abstract class TestLib
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'permissions', array());
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'permissionsCache', array());
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'loggedIn', false);
-  }
-
-
-  /**
-   * Includes the override file specified. If the file has already been included, this method does
-   * nothing.
-   *
-   * When including overrides, if the caller originates from a library within the Gustavus
-   * repository, the file will be included from Gustavus/Project/Test/Overrides. Otherwise, the
-   * file will be included from the current working directory when called.
-   *
-   * @param string $filename
-   *  The name of the override file to include, without the file extension.
-   *
-   * @throws InvalidArgumentException
-   *  if $filename is null, empty or not a string, or if the override file specified cannot be read.
-   *
-   * @return void
-   */
-  public static function addOverride($filename)
-  {
-    if (!is_string($filename) && empty($filename)) {
-      throw new InvalidArgumentException('$filename is null, empty or not a string.');
-    }
-
-    // Get the base test directory
-    $debugInfo = debug_backtrace(0);
-
-    // Jump past any internal calls from other classes in the Test package...
-    while (isset($debugInfo[0]['class']) && preg_match('/\\A\\/cis\\/lib\\/Gustavus\\/Test\\/.+\\z/', $debugInfo[0]['file']) === 1) {
-      array_shift($debugInfo);
-    }
-
-    if (isset($debugInfo[0]['file']) && preg_match('/\\A(\\/cis\\/lib\\/Gustavus\\/[^\\/]+)\\/.+$\\z/', $debugInfo[0]['file'], $matches) === 1) {
-      $base = $matches[1] . DIRECTORY_SEPARATOR . 'Test';
-    } else {
-      // Whelp... Hope for the best here.
-      $base = getcwd();
-    }
-
-    // Build an intended target and make sure it's actually a file and can be read
-    $target = sprintf('%2$s%1$s%3$s%1$s%4$s.php', DIRECTORY_SEPARATOR, $base, self::OVERRIDE_DIR, $filename);
-
-    if (!is_file($target) || !is_readable($target)) {
-      throw new InvalidArgumentException('Target override file does not exist, is not a file or is not readable: ' . $target);
-    }
-
-    require_once($target);
   }
 }

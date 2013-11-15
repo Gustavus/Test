@@ -12,7 +12,9 @@ use Gustavus\Gatekeeper\Gatekeeper,
     InvalidArgumentException;
 
 /**
- * This needs to be separate because these functions are used by Test and TestDB but Test and TestDB need to extend different classes in PHPUnit. Perhaps when traits are added to PHP, we will be able to do this differently.
+ * This needs to be separate because these functions are used by Test and TestDB but Test and TestDB
+ * need to extend different classes in PHPUnit. Perhaps when traits are added to PHP, we will be
+ * able to do this differently.
  *
  * <strong>Test Utility Locations</strong>
  * <ul>
@@ -176,5 +178,24 @@ abstract class TestLib
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'permissions', array());
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'permissionsCache', array());
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'loggedIn', false);
+  }
+
+  /**
+   * Saves the current state of the specified variable to be restored upon destruction of the
+   * returned token.
+   *
+   * @param mixed &$var
+   *  The variable for which to save the current state.
+   *
+   * @return DelayedExecutionToken
+   *  A DelayedExecutionToken that will restore the variable's state upon destruction
+   */
+  public static function savestate(&$var)
+  {
+    $temp = $var;
+
+    return new DelayedExecutionToken(function() use (&$var, $temp) {
+      $var = $temp;
+    });
   }
 }

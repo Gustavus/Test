@@ -122,4 +122,19 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   {
     return TestGacMailerInstance::$sentMessage;
   }
+
+  /**
+   * Saves the current state of the specified variable to be restored upon destruction of the
+   * returned token.
+   *
+   * @param mixed &$var
+   *  The variable for which to save the current state.
+   *
+   * @return DelayedExecutionToken
+   *  A DelayedExecutionToken that will restore the variable's state upon destruction
+   */
+  protected function savestate(&$var)
+  {
+    return TestLib::savestate($var);
+  }
 }

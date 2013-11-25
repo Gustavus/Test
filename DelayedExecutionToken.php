@@ -12,8 +12,8 @@ namespace Gustavus\Test;
 
 
 /**
- * The DelayedExecutionToken delays an action by taking advantage of PHP's fast garbage collection to
- * execute a callback when the token goes out of scope and is destructed.
+ * The DelayedExecutionToken delays an action by taking advantage of PHP's fast garbage collection
+ * to execute a callback when the token goes out of scope and is destructed.
  *
  * Note:
  *  Due to the mechanism used to execute the callback, any value returned will be silently

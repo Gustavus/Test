@@ -69,7 +69,9 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
-   * Tears down the environment
+   * Tears down the environment.
+   * <strong>Note:</strong> This won't get called if an extending class has tearDownAfterClass defined. That class would need to call parent::tearDownAfterClass.
+   *
    * @return void
    */
   public static function tearDownAfterClass()

@@ -18,7 +18,9 @@ use InvalidArgumentException;
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
   /**
-   * Tears down the environment
+   * Tears down the environment.
+   * <strong>Note:</strong> This won't get called if an extending class has tearDownAfterClass defined. That class would need to call parent::tearDownAfterClass.
+   *
    * @return void
    */
   public static function tearDownAfterClass()

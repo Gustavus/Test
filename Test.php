@@ -1,6 +1,7 @@
 <?php
 /**
  * @package Test
+ * @author Billy Visto
  */
 
 namespace Gustavus\Test;
@@ -9,10 +10,22 @@ use InvalidArgumentException;
 
 
 /**
+ * Base test class to ease testing
+ *
  * @package Test
+ * @author Billy Visto
  */
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
+  /**
+   * Tears down the environment
+   * @return void
+   */
+  public static function tearDownAfterClass()
+  {
+    TestLib::resetEnvironment();
+  }
+
   /**
    * Sets the given object property to be the value specified
    *

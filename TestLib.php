@@ -1,6 +1,7 @@
 <?php
 /**
  * @package Test
+ * @author Billy Visto
  */
 
 namespace Gustavus\Test;
@@ -23,6 +24,7 @@ use Gustavus\Gatekeeper\Gatekeeper,
  *   <li>FakePerson test utility: /cis/lib/campus/Test/FakePerson</li>
  * </ul>
  * @package Test
+ * @author Billy Visto
  */
 abstract class TestLib
 {
@@ -197,5 +199,14 @@ abstract class TestLib
     return new DelayedExecutionToken(function() use (&$var, $temp) {
       $var = $temp;
     });
+  }
+
+  /**
+   * Tears down the environment for tests
+   * @return void
+   */
+  public static function resetEnvironment()
+  {
+    static::set('\Template', 'template', null);
   }
 }

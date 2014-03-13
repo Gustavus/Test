@@ -11,7 +11,7 @@ namespace Gustavus\Test;
 abstract class TestDBPDO extends TestDB
 {
   /**
-   * @return \PDO
+   * {@inheritdoc}
    */
   final protected function getDBH()
   {

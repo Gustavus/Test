@@ -24,6 +24,16 @@ class TestObject extends \PHPUnit_Framework_TestCase
   }
 
   /**
+   * Returns the object we are testing
+   *
+   * @return mixed
+   */
+  public function getTestObject()
+  {
+    return $this->object;
+  }
+
+  /**
    * @param string $method
    * @param array $arguments
    * @return mixed

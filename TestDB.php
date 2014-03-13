@@ -1,12 +1,16 @@
 <?php
 /**
  * @package Test
+ * @author Billy Visto
  */
 
 namespace Gustavus\Test;
 
 /**
+ * Base test class to ease testing with db connections
+ *
  * @package Test
+ * @author Billy Visto
  */
 abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
 {
@@ -26,6 +30,11 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    */
   private $connection;
 
+  /**
+   * Gets the database connection to use
+   *
+   * @return \PDO PDO connection
+   */
   abstract protected function getDBH();
 
   /**
@@ -57,6 +66,17 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   protected function getFilteredDataSet($dataSet, array $filterArray)
   {
     return new \PHPUnit_Extensions_Database_DataSet_DataSetFilter($dataSet, $filterArray);
+  }
+
+  /**
+   * Tears down the environment.
+   * <strong>Note:</strong> This won't get called if an extending class has tearDownAfterClass defined. That class would need to call parent::tearDownAfterClass.
+   *
+   * @return void
+   */
+  public static function tearDownAfterClass()
+  {
+    TestLib::resetEnvironment();
   }
 
   /**

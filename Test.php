@@ -100,13 +100,15 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   /**
    * Mocks authentication
    *
-   * @param  string $username
-   * @param  Campus\Person $person Campus person to set as gatekeeper's user
+   * @param  string         $username     Username to use.
+   * @param  Campus\Person  $person       Campus person to set as gatekeeper's user
+   * @param  string         $application  Name of application.
+   * @param  array          $permissions  An array of permissions.
    * @return
    */
-  protected function authenticate($username, $person = null)
+  protected function authenticate($username, $person = null, $application = null, array $permissions = null)
   {
-    return TestLib::authenticate($username, $person);
+    return TestLib::authenticate($username, $person, $application, $permissions);
   }
 
   /**

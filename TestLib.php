@@ -155,16 +155,22 @@ abstract class TestLib
   /**
    * Mocks authentication
    *
-   * @param  string $username
-   * @param  Campus\Person $person Campus person to set as gatekeeper's user
+   * @param  string         $username     Username to use.
+   * @param  Campus\Person  $person       Campus person to set as gatekeeper's user
+   * @param  string         $application  Name of application.
+   * @param  array          $permissions  An array of permissions.
    * @return
    */
-  public static function authenticate($username, $person = null)
+  public static function authenticate($username, $person = null, $application = null, array $permissions = null)
   {
     Gatekeeper::setUsername($username);
     static::set('\Gustavus\Gatekeeper\Gatekeeper', 'loggedIn', true);
     if (is_object($person)) {
       static::set('\Gustavus\Gatekeeper\Gatekeeper', 'user', $person);
+    }
+    if (isset($application, $permissions) && is_string($application)) {
+      $newPermissions = [$username => [$application => $permissions]];
+      static::set('\Gustavus\Gatekeeper\Gatekeeper', 'permissions', $newPermissions);
     }
   }
 

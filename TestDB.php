@@ -139,6 +139,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
 
   /**
    * @test
+   * @coversNothing
    */
   public function testsTest()
   {

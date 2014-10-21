@@ -9,7 +9,8 @@ namespace Gustavus\Test;
 require_once 'gatekeeper/gatekeeper.class.php';
 
 use Gustavus\Gatekeeper\Gatekeeper,
-
+    Gustavus\GACCache\DataStoreFactory,
+    Gustavus\GACCache\Workers\ArrayFactoryWorker,
     InvalidArgumentException;
 
 /**
@@ -23,6 +24,7 @@ use Gustavus\Gatekeeper\Gatekeeper,
  *   <li>GACMailer test utility: /cis/lib/Gustavus/GACMailer/Test/MockMailer</li>
  *   <li>FakePerson test utility: /cis/lib/campus/Test/FakePerson</li>
  * </ul>
+ *
  * @package Test
  * @author Billy Visto
  */
@@ -214,5 +216,10 @@ abstract class TestLib
   public static function resetEnvironment()
   {
     static::set('\Template', 'template', null);
+
+    // make the global cache data store use array cache instead of memcache or anything any tests set it to use.
+    static::set('\Gustavus\GACCache\GlobalCache', 'factory', new DataStoreFactory([new ArrayFactoryWorker()]));
+    // verify that the datastore isn't set so it can build one off of our new factory
+    static::set('\Gustavus\GACCache\GlobalCache', 'datastore', null);
   }
 }

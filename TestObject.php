@@ -1,12 +1,19 @@
 <?php
 /**
  * @package Test
+ * @author  Joe Lencioni
+ * @author  Billy Visto
  */
 
 namespace Gustavus\Test;
 
 /**
+ * Wrapper Object used for testing objects.
+ *   Allows us to gain access to private/protected properties or methods.
+ *
  * @package Test
+ * @author  Joe Lencioni
+ * @author  Billy Visto
  */
 class TestObject
 {

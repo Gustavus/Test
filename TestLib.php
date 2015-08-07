@@ -215,7 +215,7 @@ abstract class TestLib
    */
   public static function resetEnvironment()
   {
-    static::set('\Template', 'template', null);
+    static::set('\Gustavus\Template\Template', 'template', null);
 
     // make the global cache data store use array cache instead of memcache or anything any tests set it to use.
     static::set('\Gustavus\GACCache\GlobalCache', 'factory', new DataStoreFactory([new ArrayFactoryWorker()]));

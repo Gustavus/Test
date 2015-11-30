@@ -18,6 +18,33 @@ use InvalidArgumentException;
 abstract class Test extends \PHPUnit_Framework_TestCase
 {
   /**
+   * Override tokens
+   *
+   * @var array
+   */
+  protected static $testOverrides = [];
+
+  /**
+   * Sets up the environment before tests start in a class
+   *
+   * @return void
+   */
+  public static function setUpBeforeClass()
+  {
+    $renderResourceToken = override_method('\Gustavus\Resources\Resource', 'renderResource',
+        function($resourceName, $minified = true, $cssCrush = true, $includeHost = true) use (&$renderResourceToken) {
+          $origDocRoot = $_SERVER['DOCUMENT_ROOT'];
+          $_SERVER['DOCUMENT_ROOT'] = '/cis/www/';
+
+          call_overridden_func($renderResourceToken, null, $resourceName, $minified, $cssCrush, $includeHost);
+
+          $_SERVER['DOCUMENT_ROOT'] = $origDocRoot;
+        }
+    );
+    self::$testOverrides['renderResource'] = $renderResourceToken;
+  }
+
+  /**
    * Tears down the environment.
    * <strong>Note:</strong> This won't get called if an extending class has tearDownAfterClass defined. That class would need to call parent::tearDownAfterClass.
    *
@@ -25,6 +52,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    */
   public static function tearDownAfterClass()
   {
+    self::$testOverrides = [];
     TestLib::resetEnvironment();
   }
 

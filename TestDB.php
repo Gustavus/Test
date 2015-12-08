@@ -23,12 +23,19 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   /**
    * @var array of created tables
    */
-  private $createdTableNames = array();
+  private $createdTableNames = [];
 
   /**
    * @var \PHPUnit_Extensions_Database_DB_IDatabaseConnection
    */
   private $connection;
+
+  /**
+   * Override tokens
+   *
+   * @var array
+   */
+  protected static $testOverrides = [];
 
   /**
    * Gets the database connection to use
@@ -69,6 +76,26 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
   }
 
   /**
+   * Sets up the environment before tests start in a class
+   *
+   * @return void
+   */
+  public static function setUpBeforeClass()
+  {
+    $renderResourceToken = override_method('\Gustavus\Resources\Resource', 'renderResource',
+        function($resourceName, $minified = true, $cssCrush = true, $includeHost = true) use (&$renderResourceToken) {
+          $origDocRoot = $_SERVER['DOCUMENT_ROOT'];
+          $_SERVER['DOCUMENT_ROOT'] = '/cis/www/';
+
+          call_overridden_func($renderResourceToken, null, $resourceName, $minified, $cssCrush, $includeHost);
+
+          $_SERVER['DOCUMENT_ROOT'] = $origDocRoot;
+        }
+    );
+    self::$testOverrides['renderResource'] = $renderResourceToken;
+  }
+
+  /**
    * Tears down the environment.
    * <strong>Note:</strong> This won't get called if an extending class has tearDownAfterClass defined. That class would need to call parent::tearDownAfterClass.
    *
@@ -76,6 +103,7 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
    */
   public static function tearDownAfterClass()
   {
+    self::$testOverrides = [];
     TestLib::resetEnvironment();
   }
 

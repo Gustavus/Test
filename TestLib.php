@@ -215,7 +215,9 @@ abstract class TestLib
    */
   public static function resetEnvironment()
   {
+    static::unAuthenticate();
     static::set('\Gustavus\Template\Template', 'template', null);
+    static::set('\Gustavus\Extensibility\Base', 'items', []);
 
     // make the global cache data store use array cache instead of memcache or anything any tests set it to use.
     static::set('\Gustavus\GACCache\GlobalCache', 'factory', new DataStoreFactory([new ArrayFactoryWorker()]));

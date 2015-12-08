@@ -25,18 +25,30 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   protected static $testOverrides = [];
 
   /**
+   * Storage for our initial server array
+   *
+   * @var array
+   */
+  private static $globalsStore = [];
+
+  /**
    * Sets up the environment before tests start in a class
    *
    * @return void
    */
   public static function setUpBeforeClass()
   {
+    self::$globalsStore = [
+      'server' => $_SERVER,
+      'post'   => $_POST,
+      'get'    => $_GET,
+    ];
     $renderResourceToken = override_method('\Gustavus\Resources\Resource', 'renderResource',
         function($resourceName, $minified = true, $cssCrush = true, $includeHost = true) use (&$renderResourceToken) {
           $origDocRoot = $_SERVER['DOCUMENT_ROOT'];
           $_SERVER['DOCUMENT_ROOT'] = '/cis/www/';
 
-          call_overridden_func($renderResourceToken, null, $resourceName, $minified, $cssCrush, $includeHost);
+          return call_overridden_func($renderResourceToken, null, $resourceName, $minified, $cssCrush, $includeHost);
 
           $_SERVER['DOCUMENT_ROOT'] = $origDocRoot;
         }
@@ -52,6 +64,9 @@ abstract class Test extends \PHPUnit_Framework_TestCase
    */
   public static function tearDownAfterClass()
   {
+    $_SERVER = self::$globalsStore['server'];
+    $_POST   = self::$globalsStore['post'];
+    $_GET    = self::$globalsStore['get'];
     self::$testOverrides = [];
     TestLib::resetEnvironment();
   }

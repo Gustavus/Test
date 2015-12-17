@@ -6,8 +6,8 @@
 
 namespace Gustavus\Test;
 
-use InvalidArgumentException;
-
+use InvalidArgumentException,
+  Gustavus\GACCache\Workers\ArrayFactoryWorker;
 
 /**
  * Base test class to ease testing
@@ -54,6 +54,14 @@ abstract class Test extends \PHPUnit_Framework_TestCase
         }
     );
     self::$testOverrides['renderResource'] = $renderResourceToken;
+
+    $getGlobalDataStoreToken = override_method('\Gustavus\GACCache\GlobalCache', 'getGlobalDataStore', function() use(&$getGlobalDataStoreToken) {
+      if (strpos(get_called_class(), '\\GACCache\\')) {
+        return call_overridden_func($getGlobalDataStoreToken, null);
+      }
+      return (new ArrayFactoryWorker())->buildDataStore();
+    });
+    self::$testOverrides['getGlobalDataStore'] = $getGlobalDataStoreToken;
   }
 
   /**

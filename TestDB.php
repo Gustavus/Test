@@ -6,6 +6,8 @@
 
 namespace Gustavus\Test;
 
+use  Gustavus\GACCache\Workers\ArrayFactoryWorker;
+
 /**
  * Base test class to ease testing with db connections
  *
@@ -105,6 +107,14 @@ abstract class TestDB extends \PHPUnit_Extensions_Database_TestCase
         }
     );
     self::$testOverrides['renderResource'] = $renderResourceToken;
+
+    $getGlobalDataStoreToken = override_method('\Gustavus\GACCache\GlobalCache', 'getGlobalDataStore', function() use(&$getGlobalDataStoreToken) {
+      if (strpos(get_called_class(), '\\GACCache\\')) {
+        return call_overridden_func($getGlobalDataStoreToken, null);
+      }
+      return (new ArrayFactoryWorker())->buildDataStore();
+    });
+    self::$testOverrides['getGlobalDataStore'] = $getGlobalDataStoreToken;
   }
 
   /**

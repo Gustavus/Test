@@ -56,7 +56,7 @@ abstract class Test extends \PHPUnit_Framework_TestCase
     self::$testOverrides['renderResource'] = $renderResourceToken;
 
     $getGlobalDataStoreToken = override_method('\Gustavus\GACCache\GlobalCache', 'getGlobalDataStore', function() use(&$getGlobalDataStoreToken) {
-      if (strpos(get_called_class(), '\\GACCache\\')) {
+      if (strpos(get_called_class(), '\\GACCache\\') && (!isset(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0]['file']) ||  strpos(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0]['file'], 'GACCache'))) {
         return call_overridden_func($getGlobalDataStoreToken, null);
       }
       return (new ArrayFactoryWorker())->buildDataStore();

@@ -32,6 +32,67 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   private static $globalsStore = [];
 
   /**
+   * Flag to specify if we turned on our notice handler
+   *
+   * @var boolean
+   */
+  private $noticeHandlerEnabled = false;
+
+  /**
+   * Flag to specify if a notice was triggered or not
+   *
+   * @var boolean
+   */
+  private $noticeTriggered = false;
+
+  /**
+   * Error string of the triggered notice
+   *
+   * @var string
+   */
+  private $noticeString;
+
+  /**
+   * Flag to specify if we turned on our warning handler
+   *
+   * @var boolean
+   */
+  private $warningHandlerEnabled = false;
+
+  /**
+   * Flag to specify if a warning was triggered or not
+   *
+   * @var boolean
+   */
+  private $warningTriggered = false;
+
+  /**
+   * Error string of the triggered warning
+   *
+   * @var string
+   */
+  private $warningString;
+
+  /**
+   * Tears down the environment after each test
+   *
+   * @return void
+   */
+  public function tearDown()
+  {
+    if ($this->noticeHandlerEnabled || $this->warningHandlerEnabled) {
+      restore_error_handler();
+      $this->noticeHandlerEnabled = false;
+      $this->warningHandlerEnabled = false;
+    }
+    $this->noticeTriggered = false;
+    $this->noticeString = null;
+
+    $this->warningTriggered = false;
+    $this->warningString = null;
+  }
+
+  /**
    * Sets up the environment before tests start in a class
    *
    * @return void
@@ -205,5 +266,87 @@ abstract class Test extends \PHPUnit_Framework_TestCase
   protected function savestate(&$var)
   {
     return TestLib::savestate($var);
+  }
+
+  // Notice and Warning testing
+
+  /**
+   * Handles notices so we can test that user notices get triggered
+   *
+   * @param  integer $errno  Error number
+   * @param  string $errstr Error string
+   * @return void
+   */
+  public function handleNotice($errno, $errstr)
+  {
+    $this->noticeTriggered = true;
+    $this->noticeString = $errstr;
+    $this->assertSame(E_USER_NOTICE, $errno);
+  }
+
+  /**
+   * Sets up our noticeHandler
+   */
+  protected function setUpNoticeHandler()
+  {
+    set_error_handler([$this, 'handleNotice'], E_USER_NOTICE);
+    $this->noticeHandlerEnabled = true;
+  }
+
+  /**
+   * Asserts that a notice was triggered and matches the specified string
+   * @param  string $noticeString Notice message to test
+   * @param  boolern $strict Whether to check if the noticeString is the same or is contained within the actual notice message
+   *
+   * @return void
+   */
+  protected function assertNoticeTriggered($noticeString, $strict = false)
+  {
+    $this->assertTrue($this->noticeTriggered);
+    if ($strict) {
+      $this->assertSame($noticeString, $this->noticeString);
+    } else {
+      $this->assertContains($noticeString, $this->noticeString);
+    }
+  }
+
+  /**
+   * Handles warnings so we can test that user warnings get triggered
+   *
+   * @param  integer $errno  Error number
+   * @param  string $errstr Error string
+   * @return void
+   */
+  public function handleWarning($errno, $errstr)
+  {
+    $this->noticeTriggered = true;
+    $this->noticeString = $errstr;
+    $this->assertSame(E_USER_WARNING, $errno);
+  }
+
+  /**
+   * Sets up our noticeHandler
+   */
+  protected function setUpWarningHandler()
+  {
+    set_error_handler([$this, 'handleWarning'], E_USER_WARNING);
+    $this->noticeHandlerEnabled = true;
+  }
+
+  /**
+   * Asserts that a notice was triggered and matches the specified string
+   * @param  string $warningString Warning message to test
+   * @param  boolern $strict Whether to check if the noticeString is the same or is contained within the actual notice message
+   *
+   * @return void
+   */
+  protected function assertWarningTriggered($warningString, $strict = false)
+  {
+    $this->assertTrue($this->warningTriggered);
+    if ($strict) {
+      $this->assertSame($warningString, $this->warningString);
+    } else {
+      $this->assertContains($warningString, $this->warningString);
+    }
   }
 }
